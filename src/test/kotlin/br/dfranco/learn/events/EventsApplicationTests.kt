@@ -8,6 +8,7 @@ class EventsApplicationTests {
 
 	@Test
 	fun contextLoads() {
+		main(arrayOf("--spring.main.web-environment=false"))
 	}
 
 }
