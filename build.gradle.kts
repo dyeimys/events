@@ -74,7 +74,8 @@ tasks.withType<JacocoReport> {
             fileTree(it).apply {
                 exclude(
                         "**/entities/**",
-                        "**/mapper/**",
+                        "**/mappers/**",
+                        "**/dtos/**",
                 )
             }
         }))

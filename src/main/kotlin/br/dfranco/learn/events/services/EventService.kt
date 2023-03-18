@@ -5,7 +5,7 @@ import br.dfranco.learn.events.entities.EventEntity
 import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
-import br.dfranco.learn.events.mapper.EventMapper
+import br.dfranco.learn.events.mappers.EventMapper
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.springframework.beans.factory.annotation.Autowired

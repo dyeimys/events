@@ -2,7 +2,7 @@ package br.dfranco.learn.events.services
 
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
-import br.dfranco.learn.events.mapper.EventMapper
+import br.dfranco.learn.events.mappers.EventMapper
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.junit.jupiter.api.Test

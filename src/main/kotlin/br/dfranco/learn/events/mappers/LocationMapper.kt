@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.mapper
+package br.dfranco.learn.events.mappers
 
 import br.dfranco.learn.events.dtos.LocationDto
 import br.dfranco.learn.events.entities.LocationEntity
