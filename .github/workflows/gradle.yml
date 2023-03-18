@@ -1,9 +1,6 @@
 name: Java CI with Gradle
 
-
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -11,6 +8,7 @@ permissions:
   contents: read
   checks: write
   id-token: write
+  pull-requests: write
 
 jobs:
   build:
@@ -22,29 +20,30 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Build with Gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew build -x test
+        run: ./gradlew build -x test
+
       - name: Test with Gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew test
+        run: ./gradlew test
+
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           access-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Add coverage to PR
-        id: jacoco_reporter
-        uses: PavanMudigonda/jacoco-reporter@v4.8
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.3
         with:
-          coverage_results_path: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
-          coverage_report_name: Coverage
-          coverage_report_title: JaCoCo
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_check_run: false
-          minimum_coverage: 80
-          fail_below_threshold: false
-          publish_only_summary: false
+          paths: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+          update-comment: true
+          title: Code Coverage

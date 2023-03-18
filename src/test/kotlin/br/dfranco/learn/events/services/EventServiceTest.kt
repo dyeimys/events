@@ -1,97 +1,78 @@
 package br.dfranco.learn.events.services
 
-import br.dfranco.learn.events.entities.EventEntity
-import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
 import br.dfranco.learn.events.repositories.EventRepository
-import br.dfranco.learn.events.repositories.LocationRepository
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.beans.factory.annotation.Autowired
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
-import java.time.LocalDateTime
 import java.util.UUID
 
 
 @SpringBootTest
 internal class EventServiceTest {
 
-    @Autowired
+    @Mock
     lateinit var eventRepository: EventRepository
 
-    @Autowired
-    lateinit var locationRepository: LocationRepository
 
-    @Autowired
+    @InjectMocks
     lateinit var eventService: EventService
-
-    @AfterEach
-    fun before() {
-        eventRepository.deleteAll()
-        locationRepository.deleteAll()
-    }
 
     @Test
     fun `should set status publish in  event`() {
-        val eventName = "Draw your body Fire"
-        val eventDate = LocalDateTime.now()
-        val eventOwner = "James Wire Fire"
-        val (eventId) = eventRepository.save(buildEventEntity(eventName, eventDate, eventOwner, EventStatusEnum.UNPUBLISHED))
+        // given
+        val eventId = UUID.randomUUID()
+        `when`(eventRepository.existsById(eventId)).thenReturn(true)
 
         // when
-        eventService.publishEvent(eventId!!)
+        eventService.publishingEvent(eventId)
 
         // then
-        eventRepository.findById(eventId)
-                .map(EventEntity::status)
-                .ifPresent { Assertions.assertEquals(EventStatusEnum.PUBLISHED, it) }
+        verify(eventRepository, times(1)).updateStatusById(eventId, EventStatusEnum.PUBLISHED)
     }
 
     @Test
-    fun `should not set status publish in  event`() {
+    fun `should not set status publish in event because there is no event`() {
         // given
-        val eventId = UUID.randomUUID()
+        val eventId: UUID = UUID.randomUUID()
+        `when`(eventRepository.existsById(eventId)).thenReturn(false)
 
         // when/then
-        assertThrows<NotFoundException> { eventService.publishEvent(eventId) }
+        assertThrows<NotFoundException> { eventService.publishingEvent(eventId) }
+        verify(eventRepository, never()).updateStatusById(eventId, EventStatusEnum.PUBLISHED)
+
     }
 
 
     @Test
     fun `should set status unpublish in  event`() {
-        val eventName = "Draw your body "
-        val eventDate = LocalDateTime.now()
-        val eventOwner = "James Wire "
-        val (eventId) = eventRepository.save(buildEventEntity(eventName, eventDate, eventOwner, EventStatusEnum.PUBLISHED))
+        val eventId: UUID =  UUID.randomUUID()
+        `when`(eventRepository.existsById(eventId)).thenReturn(true)
 
         // when
-        eventService.unpublishEvent(eventId!!)
+        eventService.unpublishingEvent(eventId)
 
         // then
-        eventRepository.findById(eventId)
-                .map(EventEntity::status)
-                .ifPresent { Assertions.assertEquals(EventStatusEnum.UNPUBLISHED, it) }
+        verify(eventRepository, times(1)).updateStatusById(eventId, EventStatusEnum.UNPUBLISHED)
     }
 
     @Test
-    fun `should not set status unpublish in  event`() {
+    fun `should not set status unpublish in event because there is no event`() {
         // given
-        val eventId = UUID.randomUUID()
+        val eventId: UUID =  UUID.randomUUID()
+        `when`(eventRepository.existsById(eventId)).thenReturn(false)
 
         // when/then
-        assertThrows<NotFoundException> { eventService.unpublishEvent(eventId) }
+        assertThrows<NotFoundException> { eventService.unpublishingEvent(eventId) }
+
+        verify(eventRepository, never()).updateStatusById(eventId, EventStatusEnum.UNPUBLISHED)
     }
 
-
-    private fun buildEventEntity(eventName: String, eventDate: LocalDateTime, eventOwner: String, statusEnum: EventStatusEnum?): EventEntity =
-            EventEntity(
-                    name = eventName,
-                    location = locationRepository.save(LocationEntity(name = "Dream Hall", address = "Dreams Street")),
-                    date = eventDate,
-                    owner = eventOwner,
-                    status = statusEnum!!
-            )
 }
