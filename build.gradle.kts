@@ -40,6 +40,22 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+tasks.test {
+	extensions.configure(JacocoTaskExtension::class) {
+
+	}
+
+	finalizedBy("jacocoTestReport")
+}
+
 jacoco {
 	toolVersion = "0.8.7"
+}
+
+tasks.withType<JacocoReport> {
+	reports {
+		xml.required.set(true)
+		csv.required.set(true)
+		html.required.set(true)
+	}
 }
