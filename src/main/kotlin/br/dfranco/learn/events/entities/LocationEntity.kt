@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.entity
+package br.dfranco.learn.events.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

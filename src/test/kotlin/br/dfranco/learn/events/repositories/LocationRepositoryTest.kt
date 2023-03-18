@@ -1,6 +1,6 @@
-package br.dfranco.learn.events.repository
+package br.dfranco.learn.events.repositories
 
-import br.dfranco.learn.events.entity.LocationEntity
+import br.dfranco.learn.events.entities.LocationEntity
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -55,7 +55,7 @@ class LocationRepositoryTest {
         locationRepository.save(locationEntityThree)
 
         // then
-        val allLocation = locationRepository.findAll();
+        val allLocation = locationRepository.findAll()
         Assertions.assertEquals(3, allLocation.size)
     }
 

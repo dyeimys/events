@@ -1,15 +1,15 @@
-package br.dfranco.learn.events.entity
+package br.dfranco.learn.events.entities
 
+import br.dfranco.learn.events.enuns.EventStatusEnum
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import org.jetbrains.annotations.NotNull
-import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-class EventEntity(
+data class EventEntity(
         @Id
         @GeneratedValue
         var id: UUID? = null,
@@ -29,6 +29,11 @@ class EventEntity(
         @Column
         @NotNull
         var owner: String,
+
+
+        @NotNull
+        @Enumerated
+        var status: EventStatusEnum = EventStatusEnum.UNPUBLISHED,
 
         @Column
         @CreationTimestamp

@@ -1,7 +1,8 @@
-package br.dfranco.learn.events.repository
+package br.dfranco.learn.events.repositories
 
-import br.dfranco.learn.events.entity.EventEntity
-import br.dfranco.learn.events.entity.LocationEntity
+import br.dfranco.learn.events.entities.EventEntity
+import br.dfranco.learn.events.entities.LocationEntity
+import br.dfranco.learn.events.enuns.EventStatusEnum
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -30,12 +31,12 @@ class EventRepositoryTest {
     fun `should salve one event`() {
 
         // given
-        val eventName = "Draw your body"
+        val eventName = "Draw your body Fire"
         val eventDate = LocalDateTime.now()
-        val eventOwner = "James Wire"
+        val eventOwner = "James Wire Fire"
 
-        val eventLocation = locationRepository.saveAndFlush(LocationEntity(name = "Dream Hall", address = "Dreams Street"))
-        val eventEntity = EventEntity(name = eventName, location = eventLocation, date = eventDate, owner = eventOwner)
+
+        val eventEntity = buildEventEntity(eventName, eventDate, eventOwner)
 
         // when
         val eventSaved = eventRepository.save(eventEntity)
@@ -44,8 +45,9 @@ class EventRepositoryTest {
         assertNotNull(eventSaved.id, "id not null")
         assertNotNull(eventSaved.creationDate, "creationDate not null")
         assertNotNull(eventSaved.updateDate, "updateDate not null")
+        assertNotNull(eventSaved.location, "location not null")
+        assertEquals(eventSaved.status, EventStatusEnum.UNPUBLISHED)
         assertEquals(eventName, eventSaved.name)
-        assertEquals(eventLocation, eventSaved.location)
         assertEquals(eventDate, eventSaved.date)
         assertEquals(eventOwner, eventSaved.owner)
     }
@@ -57,14 +59,9 @@ class EventRepositoryTest {
         val eventDate = LocalDateTime.now()
         val eventOwner = "James Wire"
 
-        val eventLocationOne = locationRepository.saveAndFlush(LocationEntity(name = "Dream Hall", address = "Dreams Street"))
-        val eventEntityOne = EventEntity(name = eventName, location = eventLocationOne, date = eventDate, owner = eventOwner)
-
-        val eventLocationTwo = locationRepository.saveAndFlush(LocationEntity(name = "Dream Hall", address = "Dreams Street"))
-        val eventEntityTwo = EventEntity(name = eventName, location = eventLocationTwo, date = eventDate, owner = eventOwner)
-
-        val eventLocationThree = locationRepository.saveAndFlush(LocationEntity(name = "Dream Hall", address = "Dreams Street"))
-        val eventEntityThree = EventEntity(name = eventName, location = eventLocationThree, date = eventDate, owner = eventOwner)
+        val eventEntityOne = buildEventEntity(eventName, eventDate, eventOwner)
+        val eventEntityTwo = buildEventEntity(eventName, eventDate, eventOwner)
+        val eventEntityThree = buildEventEntity(eventName, eventDate, eventOwner)
 
         // when
         eventRepository.save(eventEntityOne)
@@ -72,7 +69,14 @@ class EventRepositoryTest {
         eventRepository.save(eventEntityThree)
 
         // then
-        val allEvents = eventRepository.findAll();
+        val allEvents = eventRepository.findAll()
         assertEquals(3, allEvents.size)
     }
+
+    private fun buildEventEntity(eventName: String, eventDate: LocalDateTime, eventOwner: String): EventEntity =
+            EventEntity(
+                    name = eventName,
+                    location = locationRepository.saveAndFlush(LocationEntity(name = "Dream Hall", address = "Dreams Street")),
+                    date = eventDate,
+                    owner = eventOwner)
 }
