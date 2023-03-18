@@ -46,3 +46,4 @@ jobs:
           min-coverage-overall: 80
           min-coverage-changed-files: 80
           update-comment: true
+          title: Code Coverage
