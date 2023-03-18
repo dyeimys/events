@@ -20,6 +20,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDateTime
+import java.util.Optional
 import java.util.UUID
 
 
@@ -100,7 +101,7 @@ internal class EventServiceTest {
         val locationName = "My Location"
 
         val locationDto = buildLocationDto(null, locationName, locationAddress)
-        val eventDto = buildEventDto(null, eventName, eventOwner, eventDate, eventStatus, locationDto)
+        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationDto)
         val locationEntity = LocationEntity(null, locationName, locationAddress)
         val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
 
@@ -117,12 +118,71 @@ internal class EventServiceTest {
         verify(eventRepository).save(eventEntity)
     }
 
-    private fun buildEventDto(id: UUID? = null,
-                              name: String,
-                              owner: String,
-                              date: LocalDateTime,
-                              status: EventStatusEnum,
-                              location: LocationDto): EventDto = EventDto(id, name, date, location, owner, status)
+    @Test
+    fun `should create event with location exists`() {
+        // given
+        val eventName = "My great event II"
+        val eventOwner = "Mr James Din"
+        val eventDate = LocalDateTime.now()
+        val eventStatus = EventStatusEnum.UNPUBLISHED
+        val locationId = UUID.randomUUID()
+        val locationAddress = "Dream Street Brown"
+        val locationName = "My Location special"
+
+        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
+        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationDto)
+        val locationEntity = LocationEntity(locationId, locationName, locationAddress)
+        val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
+
+        `when`(eventMapper.dtoToEntity(eventDto)).thenReturn(eventEntity)
+        `when`(locationRepository.findById(locationId)).thenReturn(Optional.of(locationEntity))
+
+        // when
+        eventService.createEvent(eventDto)
+
+        // then
+        verify(eventMapper).dtoToEntity(eventDto)
+        verify(locationRepository).findById(any())
+        verify(locationRepository, never()).save(locationEntity)
+        verify(eventRepository).save(eventEntity)
+    }
+
+
+    @Test
+    fun `should create event with location not exists`() {
+        // given
+        val eventName = "My great event II"
+        val eventOwner = "Mr James Din"
+        val eventDate = LocalDateTime.now()
+        val eventStatus = EventStatusEnum.UNPUBLISHED
+        val locationId = UUID.randomUUID()
+        val locationAddress = "Dream Street Brown"
+        val locationName = "My Location special"
+
+        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
+        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationDto)
+        val locationEntity = LocationEntity(locationId, locationName, locationAddress)
+        val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
+
+        `when`(eventMapper.dtoToEntity(eventDto)).thenReturn(eventEntity)
+        `when`(locationRepository.save(locationEntity)).thenReturn(locationEntity)
+
+        // when
+        assertThrows<NotFoundException> { eventService.createEvent(eventDto) }
+
+        // then
+        verify(eventMapper).dtoToEntity(eventDto)
+        verify(locationRepository).findById(any())
+        verify(locationRepository, never()).save(locationEntity)
+        verify(eventRepository, never()).save(eventEntity)
+    }
+
+    private fun buildEventDto(
+            name: String,
+            owner: String,
+            date: LocalDateTime,
+            status: EventStatusEnum,
+            location: LocationDto): EventDto = EventDto(null, name, date, location, owner, status)
 
     private fun buildLocationDto(id: UUID? = null, name: String, address: String) = LocationDto(id, name, address)
 

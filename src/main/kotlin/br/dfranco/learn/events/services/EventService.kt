@@ -38,6 +38,7 @@ class EventService(
             else throw NotFoundException()
 
     private fun retrieveOrCreateLocation(eventEntity: EventEntity): LocationEntity =
-            if (eventEntity.location.id != null) locationRepository.findById(eventEntity.location.id!!).get()
+            if (eventEntity.location.id != null) locationRepository.findById(eventEntity.location.id!!)
+                    .orElseThrow { NotFoundException("Location ${eventEntity.location.id} not found") }
             else locationRepository.save(eventEntity.location)
 }
