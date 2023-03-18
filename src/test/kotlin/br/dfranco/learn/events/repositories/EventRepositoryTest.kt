@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 
 
 @SpringBootTest
-class EventRepositoryTest {
+internal class EventRepositoryTest {
 
     @Autowired
     lateinit var eventRepository: EventRepository
