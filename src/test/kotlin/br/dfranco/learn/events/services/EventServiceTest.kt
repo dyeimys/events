@@ -3,7 +3,7 @@ package br.dfranco.learn.events.services
 import br.dfranco.learn.events.entities.EventEntity
 import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
-import br.dfranco.learn.events.exception.NotFoundException
+import br.dfranco.learn.events.exceptions.NotFoundException
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.junit.jupiter.api.AfterEach

@@ -1,7 +1,7 @@
 package br.dfranco.learn.events.services
 
 import br.dfranco.learn.events.enuns.EventStatusEnum
-import br.dfranco.learn.events.exception.NotFoundException
+import br.dfranco.learn.events.exceptions.NotFoundException
 import br.dfranco.learn.events.repositories.EventRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

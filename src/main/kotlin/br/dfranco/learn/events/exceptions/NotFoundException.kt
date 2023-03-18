@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.exception
+package br.dfranco.learn.events.exceptions
 
 class NotFoundException: RuntimeException() {
 }
