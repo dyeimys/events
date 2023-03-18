@@ -36,6 +36,7 @@ internal class EventServiceTest {
 
     @Test
     fun `should set status publish in  event`() {
+        // given
         val eventName = "Draw your body Fire"
         val eventDate = LocalDateTime.now()
         val eventOwner = "James Wire Fire"
