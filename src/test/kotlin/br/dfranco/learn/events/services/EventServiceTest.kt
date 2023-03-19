@@ -6,8 +6,8 @@ import br.dfranco.learn.events.entities.EventEntity
 import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
-import br.dfranco.learn.events.mappers.EventMapper
-import br.dfranco.learn.events.mappers.LocationMapper
+import br.dfranco.learn.events.mappers.EventEntityMapper
+import br.dfranco.learn.events.mappers.LocationEntityMapper
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.junit.jupiter.api.Test
@@ -32,13 +32,13 @@ internal class EventServiceTest {
     lateinit var eventRepository: EventRepository
 
     @Mock
-    lateinit var eventMapper: EventMapper
+    lateinit var eventMapper: EventEntityMapper
 
     @Mock
     lateinit var locationRepository: LocationRepository
 
     @Mock
-    lateinit var locationMapper: LocationMapper
+    lateinit var locationMapper: LocationEntityMapper
 
     @InjectMocks
     lateinit var eventService: EventService

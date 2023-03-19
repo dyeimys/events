@@ -5,7 +5,7 @@ import br.dfranco.learn.events.entities.LocationEntity
 import org.mapstruct.Mapper
 
 @Mapper
-interface LocationMapper {
+interface LocationEntityMapper {
 
 
     fun dtoToEntity(locationDto: LocationDto): LocationEntity
