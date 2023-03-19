@@ -7,6 +7,7 @@ import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
 import br.dfranco.learn.events.mappers.EventMapper
+import br.dfranco.learn.events.mappers.LocationMapper
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.junit.jupiter.api.Test
@@ -36,6 +37,7 @@ internal class EventServiceTest {
     @Mock
     lateinit var locationRepository: LocationRepository
 
+    lateinit var locationMapper: LocationMapper
 
     @InjectMocks
     lateinit var eventService: EventService
@@ -149,7 +151,7 @@ internal class EventServiceTest {
 
 
     @Test
-    fun `should create event with location not exists`() {
+    fun `should not create event with location not exists`() {
         // given
         val eventName = "My great event II"
         val eventOwner = "Mr James Din"
@@ -175,6 +177,21 @@ internal class EventServiceTest {
         verify(locationRepository).findById(any())
         verify(locationRepository, never()).save(locationEntity)
         verify(eventRepository, never()).save(eventEntity)
+    }
+
+    @Test
+    fun `should update event location`(){
+
+    }
+
+    @Test
+    fun `should create and update event location`(){
+
+    }
+
+    @Test
+    fun `should not update event location with location not exists`(){
+
     }
 
     private fun buildEventDto(
