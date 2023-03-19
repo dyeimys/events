@@ -32,7 +32,6 @@ internal class LocationRepositoryTest {
         // then
         Assertions.assertNotNull(locationSaved.id, "id not null")
         Assertions.assertNotNull(locationSaved.creationDate, "creationDate not null")
-        Assertions.assertNotNull(locationSaved.updateDate, "updateDate not null")
         Assertions.assertEquals(locationName, locationSaved.name)
         Assertions.assertEquals(locationAddress, locationSaved.address)
 

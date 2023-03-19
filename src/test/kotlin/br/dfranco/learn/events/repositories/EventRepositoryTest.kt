@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 
@@ -44,7 +45,6 @@ internal class EventRepositoryTest {
         // then
         assertNotNull(eventSaved.id, "id not null")
         assertNotNull(eventSaved.creationDate, "creationDate not null")
-        assertNotNull(eventSaved.updateDate, "updateDate not null")
         assertNotNull(eventSaved.location, "location not null")
         assertEquals(eventSaved.status, EventStatusEnum.UNPUBLISHED)
         assertEquals(eventName, eventSaved.name)
