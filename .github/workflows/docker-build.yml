@@ -50,5 +50,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags:
-            - ghcr.io/dyeimys/events-api:${{ github.sha }}
-            - ghcr.io/dyeimys/events-api:latest
+            - ghcr.io/dyeimys/events-api:${{ github.sha }},ghcr.io/dyeimys/events-api:latest
