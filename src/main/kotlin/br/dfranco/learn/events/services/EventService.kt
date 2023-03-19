@@ -1,11 +1,13 @@
 package br.dfranco.learn.events.services
 
 import br.dfranco.learn.events.dtos.EventDto
+import br.dfranco.learn.events.dtos.LocationDto
 import br.dfranco.learn.events.entities.EventEntity
 import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
 import br.dfranco.learn.events.mappers.EventMapper
+import br.dfranco.learn.events.mappers.LocationMapper
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +19,8 @@ import java.util.UUID
 class EventService(
         @Autowired var eventRepository: EventRepository,
         @Autowired var eventMapper: EventMapper,
-        @Autowired var locationRepository: LocationRepository
+        @Autowired var locationRepository: LocationRepository,
+        @Autowired var locationMapper: LocationMapper,
 ) {
 
     @Transactional
@@ -26,6 +29,15 @@ class EventService(
             .apply { location = retrieveOrCreateLocation(this) }
             .let(eventRepository::save)
             .let(eventMapper::entityToDto)
+
+    @Transactional
+    fun updateLocation(eventId: UUID, locationDto: LocationDto): EventDto {
+        return eventId.let(eventRepository::findById)
+                .orElseThrow { NotFoundException("Event $eventId not found") }
+                .apply { location = retrieveOrCreateLocation(locationMapper.dtoToEntity(locationDto)) }
+                .let(eventRepository::save)
+                .let(eventMapper::entityToDto)
+    }
 
     @Transactional
     fun unpublishingEvent(id: UUID) =
@@ -37,8 +49,10 @@ class EventService(
             if (eventRepository.existsById(id)) eventRepository.updateStatusById(id, EventStatusEnum.PUBLISHED)
             else throw NotFoundException()
 
-    private fun retrieveOrCreateLocation(eventEntity: EventEntity): LocationEntity =
-            if (eventEntity.location.id != null) locationRepository.findById(eventEntity.location.id!!)
-                    .orElseThrow { NotFoundException("Location ${eventEntity.location.id} not found") }
-            else locationRepository.save(eventEntity.location)
+    private fun retrieveOrCreateLocation(location: LocationEntity): LocationEntity {
+        return if (location.id != null) locationRepository.findById(location.id!!).orElseThrow { NotFoundException("Location ${location.id} not found") }
+        else locationRepository.save(location)
+    }
+
+    private fun retrieveOrCreateLocation(eventEntity: EventEntity): LocationEntity = retrieveOrCreateLocation(eventEntity.location)
 }
