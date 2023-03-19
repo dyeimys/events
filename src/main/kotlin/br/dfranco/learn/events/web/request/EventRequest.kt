@@ -1,16 +1,14 @@
 package br.dfranco.learn.events.web.request
 
-import br.dfranco.learn.events.enuns.EventStatusEnum
+import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 import java.util.*
 
 data class EventRequest(
-        var id: UUID? = null,
+        @Schema(example = "My Event")
         var name: String,
         var date: LocalDateTime,
-        var location: LocationRequest,
+        var locationId: UUID?,
+        @Schema(example = "Mr. James")
         var owner: String,
-        var status: EventStatusEnum = EventStatusEnum.UNPUBLISHED,
-        var creationDate: LocalDateTime? = null,
-        var updateDate: LocalDateTime? = null
 )

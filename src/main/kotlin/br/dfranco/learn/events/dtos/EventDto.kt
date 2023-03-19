@@ -8,9 +8,9 @@ data class EventDto(
         var id: UUID? = null,
         var name: String,
         var date: LocalDateTime,
-        var location: LocationDto,
+        var locationId: UUID?,
         var owner: String,
-        var status: EventStatusEnum = EventStatusEnum.UNPUBLISHED,
+        var status: EventStatusEnum? = EventStatusEnum.UNPUBLISHED,
         var creationDate: LocalDateTime? = null,
         var updateDate: LocalDateTime? = null
 )
