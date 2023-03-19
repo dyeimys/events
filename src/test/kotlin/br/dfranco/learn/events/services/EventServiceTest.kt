@@ -181,18 +181,124 @@ internal class EventServiceTest {
     }
 
     @Test
-    fun `should update event location`(){
+    fun `should update event location`() {
+        // given
+        val eventId = UUID.randomUUID()
+        val eventName = "My great event II"
+        val eventOwner = "Mr James Din"
+        val eventDate = LocalDateTime.now()
+        val eventStatus = EventStatusEnum.UNPUBLISHED
+        val locationId = UUID.randomUUID()
+        val locationAddress = "Dream Street Brown"
+        val locationName = "My Location special"
 
+        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
+        val locationEntity = LocationEntity(locationId, locationName, locationAddress)
+        val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
+
+        `when`(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity))
+        `when`(locationMapper.dtoToEntity(locationDto)).thenReturn(locationEntity)
+        `when`(locationRepository.findById(locationId)).thenReturn(Optional.of(locationEntity))
+        `when`(eventRepository.save(eventEntity)).thenReturn(eventEntity.apply { id = UUID.randomUUID() })
+
+        // when
+        eventService.updateLocation(eventId, locationDto)
+
+        // then
+        verify(eventRepository).findById(eventId)
+        verify(locationMapper).dtoToEntity(locationDto)
+        verify(locationRepository).findById(locationId)
+        verify(locationRepository, never()).save(locationEntity)
+        verify(eventRepository).save(eventEntity)
+        verify(eventMapper).entityToDto(eventEntity)
     }
 
     @Test
-    fun `should create and update event location`(){
+    fun `should not update event location without event`() {
+        // given
+        val eventId = UUID.randomUUID()
+        val locationId = UUID.randomUUID()
+        val locationAddress = "Dream Street Brown"
+        val locationName = "My Location special"
 
+        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
+
+        `when`(eventRepository.findById(eventId)).thenReturn(Optional.empty())
+
+        // when
+        assertThrows<NotFoundException> {eventService.updateLocation(eventId, locationDto)}
+
+        // then
+        verify(eventRepository).findById(eventId)
+        verify(locationMapper, never()).dtoToEntity(locationDto)
+        verify(locationRepository, never()).findById(locationId)
+        verify(locationRepository, never()).save(any())
+        verify(eventRepository, never()).save(any())
     }
 
     @Test
-    fun `should not update event location with location not exists`(){
+    fun `should create and update event location`() {
+        // given
+        val eventId = UUID.randomUUID()
+        val eventName = "My great event II"
+        val eventOwner = "Mr James Din"
+        val eventDate = LocalDateTime.now()
+        val eventStatus = EventStatusEnum.UNPUBLISHED
+        val locationId = UUID.randomUUID()
+        val locationAddress = "Dream Street Brown"
+        val locationName = "My Location special"
 
+        val locationDto = buildLocationDto(null, locationName, locationAddress)
+        val locationEntity = LocationEntity(null, locationName, locationAddress)
+        val eventEntity = EventEntity(eventId, eventName, eventDate, locationEntity, eventOwner, eventStatus)
+
+        `when`(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity))
+        `when`(locationMapper.dtoToEntity(locationDto)).thenReturn(locationEntity)
+        `when`(locationRepository.save(locationEntity)).thenReturn(locationEntity)
+        `when`(eventRepository.save(eventEntity)).thenReturn(eventEntity)
+
+        // when
+        eventService.updateLocation(eventId, locationDto)
+
+        // then
+        verify(eventRepository).findById(eventId)
+        verify(locationMapper).dtoToEntity(locationDto)
+        verify(locationRepository , never()).findById(locationId)
+        verify(locationRepository).save(locationEntity)
+        verify(eventRepository).save(eventEntity)
+        verify(eventMapper).entityToDto(eventEntity)
+    }
+
+    @Test
+    fun `should not update event location with location not exists`() {
+        // given
+        val eventId = UUID.randomUUID()
+        val eventName = "My great event II"
+        val eventOwner = "Mr James Din"
+        val eventDate = LocalDateTime.now()
+        val eventStatus = EventStatusEnum.UNPUBLISHED
+        val locationId = UUID.randomUUID()
+        val locationAddress = "Dream Street Brown"
+        val locationName = "My Location special"
+
+        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
+        val locationEntity = LocationEntity(locationId, locationName, locationAddress)
+        val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
+
+        `when`(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity))
+        `when`(locationMapper.dtoToEntity(locationDto)).thenReturn(locationEntity)
+        `when`(locationRepository.findById(locationId)).thenReturn(Optional.empty())
+
+        // when
+        assertThrows<NotFoundException> {eventService.updateLocation(eventId, locationDto)}
+
+        // then
+        verify(eventRepository).findById(eventId)
+        verify(locationMapper).dtoToEntity(locationDto)
+        verify(locationRepository).findById(locationId)
+        verify(locationRepository, never()).save(locationEntity)
+        verify(eventRepository, never()).save(eventEntity)
+        verify(eventMapper, never()).entityToDto(eventEntity)
     }
 
     private fun buildEventDto(
