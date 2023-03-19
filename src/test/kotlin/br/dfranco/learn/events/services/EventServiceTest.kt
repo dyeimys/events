@@ -37,6 +37,7 @@ internal class EventServiceTest {
     @Mock
     lateinit var locationRepository: LocationRepository
 
+    @Mock
     lateinit var locationMapper: LocationMapper
 
     @InjectMocks
