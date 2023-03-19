@@ -23,19 +23,31 @@ internal class EventControllerTest {
 
     @Test
     fun `perform creation of event`() {
+
+        val name = "My first event "
+        val date = LocalDateTime.now()
+        val location = LocationRequest(name = "My Location", address = "My Address")
+        val owner = "Owner"
+        val status = EventStatusEnum.UNPUBLISHED
+
+        val eventRequest = eventRequest(name, date, location, owner, status)
+
+
         val postForEntity: ResponseEntity<EventResponse> = restTestTemplate.postForEntity(
                 "/events",
-                EventRequest(
-                        name = "My first event ",
-                        date = LocalDateTime.now(),
-                        location = LocationRequest(name = "My Location", address = "My Address"),
-                        owner = "Owner",
-                        status = EventStatusEnum.UNPUBLISHED
-                ),
+                eventRequest,
                 EventResponse::class.java
         )
 
         assertEquals(HttpStatusCode.valueOf(200), postForEntity.statusCode)
+    }
+
+    private fun eventRequest(name: String,
+                             date: LocalDateTime,
+                             location: LocationRequest,
+                             owner: String,
+                             status: EventStatusEnum): EventRequest {
+        return EventRequest(null, name, date, location, owner, status)
     }
 
 

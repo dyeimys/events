@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/events")
 class EventController(
-        @Autowired var eventService: EventService,
-        @Autowired var eventMapper: EventMapper
+        @Autowired private var eventService: EventService,
+        @Autowired private var eventMapper: EventMapper
 ) {
 
 

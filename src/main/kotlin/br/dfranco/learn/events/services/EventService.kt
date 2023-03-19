@@ -17,10 +17,10 @@ import java.util.UUID
 
 @Service
 class EventService(
-        @Autowired var eventRepository: EventRepository,
-        @Autowired var eventMapper: EventEntityMapper,
-        @Autowired var locationRepository: LocationRepository,
-        @Autowired var locationMapper: LocationEntityMapper,
+        @Autowired private var eventRepository: EventRepository,
+        @Autowired private var eventMapper: EventEntityMapper,
+        @Autowired private var locationRepository: LocationRepository,
+        @Autowired private var locationMapper: LocationEntityMapper,
 ) {
 
     @Transactional
