@@ -31,5 +31,4 @@ class LocationEntity (
         @Column
         @UpdateTimestamp
         var updateDate: LocalDateTime? = null
-        ){
-}
+        )

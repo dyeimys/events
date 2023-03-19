@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 @EnableJpaAuditing
 @SpringBootApplication
 class EventsApplication
-
-
 fun main(args: Array<String>) {
 	runApplication<EventsApplication>(*args)
 }

@@ -1,4 +1,3 @@
 package br.dfranco.learn.events.exceptions
 
-class NotFoundException: RuntimeException() {
-}
+class NotFoundException(message: String? = null) : RuntimeException(message)
