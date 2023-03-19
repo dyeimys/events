@@ -1,17 +1,12 @@
 package br.dfranco.learn.events.entities
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
+import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-class LocationEntity (
+class LocationEntity(
         @Id
         @GeneratedValue
         var id: UUID? = null,
@@ -25,10 +20,18 @@ class LocationEntity (
         var address: String,
 
         @Column
-        @CreationTimestamp
         var creationDate: LocalDateTime? = null,
 
         @Column
-        @UpdateTimestamp
         var updateDate: LocalDateTime? = null
-        )
+) {
+    @PrePersist
+    fun prePersist() {
+        creationDate = LocalDateTime.now()
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updateDate = LocalDateTime.now()
+    }
+}

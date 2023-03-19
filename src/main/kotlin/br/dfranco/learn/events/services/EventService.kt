@@ -6,8 +6,8 @@ import br.dfranco.learn.events.entities.EventEntity
 import br.dfranco.learn.events.entities.LocationEntity
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
-import br.dfranco.learn.events.mappers.EventMapper
-import br.dfranco.learn.events.mappers.LocationMapper
+import br.dfranco.learn.events.mappers.EventEntityMapper
+import br.dfranco.learn.events.mappers.LocationEntityMapper
 import br.dfranco.learn.events.repositories.EventRepository
 import br.dfranco.learn.events.repositories.LocationRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,10 +17,10 @@ import java.util.UUID
 
 @Service
 class EventService(
-        @Autowired var eventRepository: EventRepository,
-        @Autowired var eventMapper: EventMapper,
-        @Autowired var locationRepository: LocationRepository,
-        @Autowired var locationMapper: LocationMapper,
+        @Autowired private var eventRepository: EventRepository,
+        @Autowired private var eventMapper: EventEntityMapper,
+        @Autowired private var locationRepository: LocationRepository,
+        @Autowired private var locationMapper: LocationEntityMapper,
 ) {
 
     @Transactional

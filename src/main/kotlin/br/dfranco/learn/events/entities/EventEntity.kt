@@ -2,8 +2,6 @@ package br.dfranco.learn.events.entities
 
 import br.dfranco.learn.events.enuns.EventStatusEnum
 import jakarta.persistence.*
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDateTime
 import java.util.*
@@ -36,10 +34,18 @@ data class EventEntity(
         var status: EventStatusEnum = EventStatusEnum.UNPUBLISHED,
 
         @Column
-        @CreationTimestamp
         var creationDate: LocalDateTime? = null,
 
         @Column
-        @UpdateTimestamp
-        var updateDate: LocalDateTime? = null
-)
+        var updateDate: LocalDateTime? = null,
+        ) {
+    @PrePersist
+    fun prePersist() {
+        creationDate = LocalDateTime.now()
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updateDate = LocalDateTime.now()
+    }
+}

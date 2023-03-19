@@ -4,8 +4,8 @@ import br.dfranco.learn.events.dtos.EventDto
 import br.dfranco.learn.events.entities.EventEntity
 import org.mapstruct.Mapper
 
-@Mapper(uses = [LocationMapper::class])
-interface EventMapper {
+@Mapper(uses = [LocationEntityMapper::class])
+interface EventEntityMapper {
 
     fun dtoToEntity(eventDto: EventDto): EventEntity
 
