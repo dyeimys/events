@@ -103,13 +103,11 @@ internal class EventServiceTest {
         val locationAddress = "Dream Street"
         val locationName = "My Location"
 
-        val locationDto = buildLocationDto(null, locationName, locationAddress)
-        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationDto)
+        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, null)
         val locationEntity = LocationEntity(null, locationName, locationAddress)
         val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
 
         `when`(eventMapper.dtoToEntity(eventDto)).thenReturn(eventEntity)
-        `when`(locationRepository.save(locationEntity)).thenReturn(locationEntity)
 
         // when
         eventService.createEvent(eventDto)
@@ -117,7 +115,6 @@ internal class EventServiceTest {
         // then
         verify(eventMapper).dtoToEntity(eventDto)
         verify(locationRepository, never()).findById(any())
-        verify(locationRepository).save(locationEntity)
         verify(eventRepository).save(eventEntity)
     }
 
@@ -132,8 +129,7 @@ internal class EventServiceTest {
         val locationAddress = "Dream Street Brown"
         val locationName = "My Location special"
 
-        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
-        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationDto)
+        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationId)
         val locationEntity = LocationEntity(locationId, locationName, locationAddress)
         val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
 
@@ -162,8 +158,7 @@ internal class EventServiceTest {
         val locationAddress = "Dream Street Brown"
         val locationName = "My Location special"
 
-        val locationDto = buildLocationDto(locationId, locationName, locationAddress)
-        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationDto)
+        val eventDto = buildEventDto(eventName, eventOwner, eventDate, eventStatus, locationId)
         val locationEntity = LocationEntity(locationId, locationName, locationAddress)
         val eventEntity = EventEntity(null, eventName, eventDate, locationEntity, eventOwner, eventStatus)
 
@@ -306,7 +301,7 @@ internal class EventServiceTest {
             owner: String,
             date: LocalDateTime,
             status: EventStatusEnum,
-            location: LocationDto): EventDto = EventDto(null, name, date, location, owner, status)
+            locationId: UUID?): EventDto = EventDto(null, name, date, locationId, owner, status)
 
     private fun buildLocationDto(id: UUID? = null, name: String, address: String) = LocationDto(id, name, address)
 

@@ -20,9 +20,8 @@ data class EventEntity(
         @NotNull
         var date: LocalDateTime,
 
-        @NotNull
         @ManyToOne
-        var location: LocationEntity,
+        var location: LocationEntity?,
 
         @Column
         @NotNull
@@ -31,7 +30,7 @@ data class EventEntity(
 
         @NotNull
         @Enumerated
-        var status: EventStatusEnum = EventStatusEnum.UNPUBLISHED,
+        var status: EventStatusEnum? = EventStatusEnum.UNPUBLISHED,
 
         @Column
         var creationDate: LocalDateTime? = null,

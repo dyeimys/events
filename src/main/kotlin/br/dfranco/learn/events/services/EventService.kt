@@ -24,11 +24,16 @@ class EventService(
 ) {
 
     @Transactional
-    fun createEvent(eventDto: EventDto): EventDto = eventDto
-            .let(eventMapper::dtoToEntity)
-            .apply { location = retrieveOrCreateLocation(this) }
-            .let(eventRepository::save)
-            .let(eventMapper::entityToDto)
+    fun createEvent(eventDto: EventDto): EventDto {
+        return eventDto
+                .let(eventMapper::dtoToEntity)
+                .apply {
+                    location = retrieveLocation(eventDto.locationId)
+                    status = EventStatusEnum.UNPUBLISHED
+                }
+                .let(eventRepository::save)
+                .let(eventMapper::entityToDto)
+    }
 
     @Transactional
     fun updateLocation(eventId: UUID, locationDto: LocationDto): EventDto {
@@ -54,5 +59,12 @@ class EventService(
         else locationRepository.save(location)
     }
 
-    private fun retrieveOrCreateLocation(eventEntity: EventEntity): LocationEntity = retrieveOrCreateLocation(eventEntity.location)
+    private fun retrieveLocation(locationId: UUID?): LocationEntity? {
+        return if (locationId != null) {
+            locationRepository.findById(locationId)
+                    .orElseThrow { NotFoundException("Location $locationId not found") }
+        } else {
+            null
+        }
+    }
 }
