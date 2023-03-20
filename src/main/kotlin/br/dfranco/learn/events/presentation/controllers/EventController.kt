@@ -1,9 +1,10 @@
-package br.dfranco.learn.events.web.controller
+package br.dfranco.learn.events.presentation.controllers
 
-import br.dfranco.learn.events.services.EventService
-import br.dfranco.learn.events.web.mapper.EventMapper
-import br.dfranco.learn.events.web.request.EventRequest
-import br.dfranco.learn.events.web.response.EventResponse
+import br.dfranco.learn.events.presentation.requests.EventRequest
+import br.dfranco.learn.events.presentation.responses.EventResponse
+import br.dfranco.learn.events.presentation.mappers.EventDtoMapper
+import br.dfranco.learn.events.application.services.EventService
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/events")
 class EventController(
         @Autowired private var eventService: EventService,
-        @Autowired private var eventMapper: EventMapper
+        @Autowired private var eventMapper: EventDtoMapper
 ) {
 
 
+    @Operation(
+            description = "Create new event\n Create new event with location. This event is created with status UNPUBLISHED"
+    )
     @PostMapping
     fun createEvent(@RequestBody event: EventRequest): EventResponse = event.let(eventMapper::toDto)
             .let(eventService::createEvent)
