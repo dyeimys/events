@@ -9,7 +9,7 @@ To run this project, you will need to have the following software installed on y
 - JDK 17
 - Gradle 7+
 
-### Installation ### 
+### :arrow_forward: Installation ### 
 1. Clone the repository: 
 ```bash
 git clone https://github.com/dyeimys/events.git
