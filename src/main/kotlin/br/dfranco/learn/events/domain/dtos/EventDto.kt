@@ -1,6 +1,6 @@
-package br.dfranco.learn.events.dtos
+package br.dfranco.learn.events.domain.dtos
 
-import br.dfranco.learn.events.enuns.EventStatusEnum
+import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import java.time.LocalDateTime
 import java.util.UUID
 

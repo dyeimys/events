@@ -1,7 +1,7 @@
-package br.dfranco.learn.events.mappers
+package br.dfranco.learn.events.app.mappers
 
-import br.dfranco.learn.events.dtos.EventDto
-import br.dfranco.learn.events.entities.EventEntity
+import br.dfranco.learn.events.domain.dtos.EventDto
+import br.dfranco.learn.events.domain.entities.EventEntity
 import org.mapstruct.Mapper
 
 @Mapper(uses = [LocationEntityMapper::class])

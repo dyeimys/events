@@ -1,8 +1,8 @@
-package br.dfranco.learn.events.web.mapper
+package br.dfranco.learn.events.domain.mapper
 
-import br.dfranco.learn.events.dtos.EventDto
-import br.dfranco.learn.events.web.request.EventRequest
-import br.dfranco.learn.events.web.response.EventResponse
+import br.dfranco.learn.events.domain.dtos.EventDto
+import br.dfranco.learn.events.app.controllers.request.EventRequest
+import br.dfranco.learn.events.app.controllers.response.EventResponse
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 

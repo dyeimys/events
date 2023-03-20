@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.web.request
+package br.dfranco.learn.events.app.controllers.request
 
 import java.time.LocalDateTime
 import java.util.*

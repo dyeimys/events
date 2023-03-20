@@ -1,15 +1,14 @@
-package br.dfranco.learn.events.services
+package br.dfranco.learn.events.domain.service
 
-import br.dfranco.learn.events.dtos.EventDto
-import br.dfranco.learn.events.dtos.LocationDto
-import br.dfranco.learn.events.entities.EventEntity
-import br.dfranco.learn.events.entities.LocationEntity
-import br.dfranco.learn.events.enuns.EventStatusEnum
+import br.dfranco.learn.events.domain.dtos.EventDto
+import br.dfranco.learn.events.domain.dtos.LocationDto
+import br.dfranco.learn.events.domain.entities.LocationEntity
+import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException
-import br.dfranco.learn.events.mappers.EventEntityMapper
-import br.dfranco.learn.events.mappers.LocationEntityMapper
-import br.dfranco.learn.events.repositories.EventRepository
-import br.dfranco.learn.events.repositories.LocationRepository
+import br.dfranco.learn.events.app.mappers.EventEntityMapper
+import br.dfranco.learn.events.app.mappers.LocationEntityMapper
+import br.dfranco.learn.events.infrastructure.persistence.EventRepository
+import br.dfranco.learn.events.infrastructure.persistence.LocationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

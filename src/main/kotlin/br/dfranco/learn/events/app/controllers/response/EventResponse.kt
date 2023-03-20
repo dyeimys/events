@@ -1,7 +1,7 @@
-package br.dfranco.learn.events.web.response
+package br.dfranco.learn.events.app.controllers.response
 
-import br.dfranco.learn.events.dtos.LocationDto
-import br.dfranco.learn.events.enuns.EventStatusEnum
+import br.dfranco.learn.events.domain.dtos.LocationDto
+import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import java.time.LocalDateTime
 import java.util.*
 

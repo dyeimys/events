@@ -1,7 +1,7 @@
-package br.dfranco.learn.events.repositories
+package br.dfranco.learn.events.infrastructure.persistence
 
-import br.dfranco.learn.events.entities.EventEntity
-import br.dfranco.learn.events.enuns.EventStatusEnum
+import br.dfranco.learn.events.domain.entities.EventEntity
+import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query

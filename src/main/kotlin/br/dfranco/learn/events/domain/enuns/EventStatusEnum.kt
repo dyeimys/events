@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.enuns
+package br.dfranco.learn.events.domain.enuns
 
 enum class EventStatusEnum {
     PUBLISHED, UNPUBLISHED

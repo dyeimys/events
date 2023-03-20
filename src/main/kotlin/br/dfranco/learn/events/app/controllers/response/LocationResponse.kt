@@ -1,9 +1,9 @@
-package br.dfranco.learn.events.dtos
+package br.dfranco.learn.events.app.controllers.response
 
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
-data class LocationDto (
+data class LocationResponse (
         var id: UUID? = null,
         var name: String,
         var address: String,
