@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.domain.dtos
+package br.dfranco.learn.events.application.dto
 
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import java.time.LocalDateTime

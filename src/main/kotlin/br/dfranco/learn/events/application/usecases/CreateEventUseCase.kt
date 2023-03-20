@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.usecases
+package br.dfranco.learn.events.application.usecases
 
 import org.springframework.stereotype.Component
 

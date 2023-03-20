@@ -1,9 +1,9 @@
-package br.dfranco.learn.events.app.controllers
+package br.dfranco.learn.events.presentation.controllers
 
-import br.dfranco.learn.events.app.controllers.request.EventRequest
-import br.dfranco.learn.events.app.controllers.response.EventResponse
-import br.dfranco.learn.events.domain.mapper.EventMapper
-import br.dfranco.learn.events.domain.service.EventService
+import br.dfranco.learn.events.presentation.request.EventRequest
+import br.dfranco.learn.events.presentation.response.EventResponse
+import br.dfranco.learn.events.presentation.mapper.EventDtoMapper
+import br.dfranco.learn.events.application.services.EventService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/events")
 class EventController(
         @Autowired private var eventService: EventService,
-        @Autowired private var eventMapper: EventMapper
+        @Autowired private var eventMapper: EventDtoMapper
 ) {
 
 

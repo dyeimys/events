@@ -1,13 +1,12 @@
-package br.dfranco.learn.events.app.controllers.response
+package br.dfranco.learn.events.presentation.request
 
 import java.time.LocalDateTime
 import java.util.*
 
-data class LocationResponse (
+data class LocationRequest(
         var id: UUID? = null,
         var name: String,
         var address: String,
         var creationDate: LocalDateTime? = null,
         var updateDate: LocalDateTime? = null
-        ){
-}
+)

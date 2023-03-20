@@ -1,4 +1,4 @@
-package br.dfranco.learn.events.app.controllers.request
+package br.dfranco.learn.events.presentation.request
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime

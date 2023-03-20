@@ -1,9 +1,9 @@
 package br.dfranco.learn.events.web.controller
 
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
-import br.dfranco.learn.events.app.controllers.request.EventRequest
-import br.dfranco.learn.events.app.controllers.request.LocationRequest
-import br.dfranco.learn.events.app.controllers.response.EventResponse
+import br.dfranco.learn.events.presentation.request.EventRequest
+import br.dfranco.learn.events.presentation.request.LocationRequest
+import br.dfranco.learn.events.presentation.response.EventResponse
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

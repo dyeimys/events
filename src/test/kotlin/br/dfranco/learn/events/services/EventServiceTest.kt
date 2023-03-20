@@ -1,7 +1,7 @@
 //package br.dfranco.learn.events.services
 //
-//import br.dfranco.learn.events.domain.dtos.EventDto
-//import br.dfranco.learn.events.domain.dtos.LocationDto
+//import br.dfranco.learn.events.application.dto.EventDto
+//import br.dfranco.learn.events.application.dto.LocationDto
 //import br.dfranco.learn.events.domain.entities.EventEntity
 //import br.dfranco.learn.events.domain.entities.LocationEntity
 //import br.dfranco.learn.events.domain.enuns.EventStatusEnum
