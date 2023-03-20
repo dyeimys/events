@@ -1,12 +1,13 @@
-package br.dfranco.learn.events.presentation.request
+package br.dfranco.learn.events.application.dtos
 
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
-data class LocationRequest(
+data class LocationDto (
         var id: UUID? = null,
         var name: String,
         var address: String,
         var creationDate: LocalDateTime? = null,
         var updateDate: LocalDateTime? = null
-)
+        ){
+}

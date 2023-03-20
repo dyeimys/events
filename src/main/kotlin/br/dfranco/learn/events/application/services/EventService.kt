@@ -1,7 +1,7 @@
 package br.dfranco.learn.events.application.services
 
-import br.dfranco.learn.events.application.dto.EventDto
-import br.dfranco.learn.events.application.dto.LocationDto
+import br.dfranco.learn.events.application.dtos.EventDto
+import br.dfranco.learn.events.application.dtos.LocationDto
 import br.dfranco.learn.events.domain.entities.LocationEntity
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.NotFoundException

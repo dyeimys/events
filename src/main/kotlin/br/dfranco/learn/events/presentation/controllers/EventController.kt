@@ -1,8 +1,8 @@
 package br.dfranco.learn.events.presentation.controllers
 
-import br.dfranco.learn.events.presentation.request.EventRequest
-import br.dfranco.learn.events.presentation.response.EventResponse
-import br.dfranco.learn.events.presentation.mapper.EventDtoMapper
+import br.dfranco.learn.events.presentation.requests.EventRequest
+import br.dfranco.learn.events.presentation.responses.EventResponse
+import br.dfranco.learn.events.presentation.mappers.EventDtoMapper
 import br.dfranco.learn.events.application.services.EventService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired

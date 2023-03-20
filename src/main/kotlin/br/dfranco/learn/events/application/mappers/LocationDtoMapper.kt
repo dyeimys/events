@@ -1,6 +1,6 @@
 package br.dfranco.learn.events.application.mappers
 
-import br.dfranco.learn.events.application.dto.LocationDto
+import br.dfranco.learn.events.application.dtos.LocationDto
 import br.dfranco.learn.events.domain.entities.LocationEntity
 import org.mapstruct.Mapper
 
