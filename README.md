@@ -35,3 +35,11 @@ docker run -p 8080:8080 ghcr.io/dyeimys/events-api:latest
 │                  └── responses
 
 ```
+
+
+Each layer has its own responsibilities and concerns, following the separation of concerns principle. The packages are organized as follows:
+
+- `application`: contains the use cases, which represents the application's business rules. This layer uses DTOs to transfer data between layers and mappers to convert between DTOs and entities.
+- `domain`: contains the entities, which represent the business domain concepts, and the enums and exceptions used by the domain.
+- `infrastructure`: contains the implementations of the interfaces defined by the `application` and `domain` layers. In this project, it contains the persistence and Kafka implementations.
+- `presentation`: contains the web controllers and their DTOs and mappers. The controllers receive the requests, use the `application` layer to perform the business logic, and return the responses to the client.
