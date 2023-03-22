@@ -90,8 +90,8 @@ tasks.withType<JacocoReport> {
                 exclude(
                         "**/entities/**",
                         "**/dtos/**",
-                        "**/request/**",
-                        "**/response/**",
+                        "**/requests/**",
+                        "**/responses/**",
 
                         )
             }
