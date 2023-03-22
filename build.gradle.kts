@@ -66,9 +66,15 @@ tasks.test {
     finalizedBy("jacocoTestReport")
 }
 
+val fileFilter = listOf("**/entities/**",
+        "**/dtos/**",
+        "**/requests/**",
+        "**/responses/**")
+
 jacoco {
     toolVersion = "0.8.7"
 }
+
 tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
@@ -77,7 +83,14 @@ tasks.jacocoTestCoverageVerification {
             }
         }
     }
+    classDirectories.setFrom(files(classDirectories.files.map {
+        fileTree(it).apply {
+            exclude(fileFilter)
+        }
+    }))
 }
+
+
 tasks.withType<JacocoReport> {
     reports {
         xml.required.set(true)
@@ -87,13 +100,7 @@ tasks.withType<JacocoReport> {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.map {
             fileTree(it).apply {
-                exclude(
-                        "**/entities/**",
-                        "**/dtos/**",
-                        "**/requests/**",
-                        "**/responses/**",
-                        "**/mappers/**",
-                        )
+                exclude(fileFilter)
             }
         }))
     }
