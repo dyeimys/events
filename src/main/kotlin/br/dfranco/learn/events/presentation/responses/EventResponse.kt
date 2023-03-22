@@ -8,7 +8,7 @@ data class EventResponse(
         var id: UUID? = null,
         var name: String,
         var date: LocalDateTime,
-        var location: LocationResponse?,
+        var locationId: String?,
         var owner: String,
         var status: EventStatusEnum = EventStatusEnum.UNPUBLISHED
 ) {

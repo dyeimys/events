@@ -24,11 +24,13 @@ cd events
 
 4. Access the application at http://localhost:8080/swagger-ui.html
 ## :whale: Run in docker ##
-```
+```bash
 docker pull ghcr.io/dyeimys/events-api:latest
-docker run -p 8080:8080 ghcr.io/dyeimys/events-api:latest 
 ```
 
+```bash
+docker run -p 8080:8080 ghcr.io/dyeimys/events-api:latest 
+```
 🔗 Access Swagger: [swagger-ui/index](http://localhost:8080/swagger-ui/index.html)
 
 ## :package: Packages organization

@@ -1,8 +1,9 @@
-package br.dfranco.learn.events.web.controller
+package br.dfranco.learn.events.presentation.controllers
 
+import br.dfranco.learn.events.domain.entities.LocationEntity
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
+import br.dfranco.learn.events.infrastructure.persistence.LocationRepository
 import br.dfranco.learn.events.presentation.requests.EventRequest
-import br.dfranco.learn.events.presentation.requests.LocationRequest
 import br.dfranco.learn.events.presentation.responses.EventResponse
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -21,16 +22,17 @@ internal class EventControllerTest {
     @Autowired
     lateinit var restTestTemplate: TestRestTemplate
 
+    @Autowired
+    lateinit var locationRepository: LocationRepository
+
     @Test
-    fun `perform creation of event`() {
+    fun `perform creation of event without location`() {
 
         // given
         val name = "My first event "
         val date = LocalDateTime.now()
         val owner = "Owner"
         val status = EventStatusEnum.UNPUBLISHED
-        val locationName = "My Location"
-        val locationAddress = "My Address"
 
         val eventRequest = buildEventRequest(name, date, null, owner)
 
@@ -48,7 +50,7 @@ internal class EventControllerTest {
         assertEquals(HttpStatusCode.valueOf(200), statusCode)
 
         assertNotNull(eventResponse.id, "event id expected not null")
-        assertNull(eventResponse.location)
+        assertNull(eventResponse.locationId)
         assertEquals(name, eventResponse.name)
         assertEquals(owner, eventResponse.owner)
         assertEquals(date, eventResponse.date)
@@ -56,8 +58,41 @@ internal class EventControllerTest {
 
     }
 
-    private fun buildLocationRequest(locationName: String, locationAddress: String) =
-            LocationRequest(name = locationName, address = locationAddress)
+    @Test
+    fun `perform creation of event with location`() {
+
+        // given
+        val name = "My first event "
+        val date = LocalDateTime.now()
+        val owner = "Owner"
+        val status = EventStatusEnum.UNPUBLISHED
+        val locationName = "Name of event"
+        val locationAddress = "Address of event"
+
+        val (locationId) = locationRepository.save(LocationEntity(name= locationName, address = locationAddress))
+        val eventRequest = buildEventRequest(name, date, locationId, owner)
+
+        // when
+        val postForEntity: ResponseEntity<EventResponse> = restTestTemplate.postForEntity(
+                "/events",
+                eventRequest,
+                EventResponse::class.java
+        )
+
+        // then
+        val statusCode = postForEntity.statusCode
+        val eventResponse = postForEntity.body!!
+
+        assertEquals(HttpStatusCode.valueOf(200), statusCode)
+
+        assertNotNull(eventResponse.id, "event id expected not null")
+        assertNotNull(eventResponse.locationId)
+        assertEquals(name, eventResponse.name)
+        assertEquals(owner, eventResponse.owner)
+        assertEquals(date, eventResponse.date)
+        assertEquals(status, eventResponse.status)
+
+    }
 
     private fun buildEventRequest(name: String,
                                   date: LocalDateTime,

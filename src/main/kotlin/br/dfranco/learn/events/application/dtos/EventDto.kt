@@ -2,7 +2,7 @@ package br.dfranco.learn.events.application.dtos
 
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class EventDto(
         var id: UUID? = null,

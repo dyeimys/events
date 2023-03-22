@@ -1,11 +1,9 @@
 package br.dfranco.learn.events.application.services
 
 import br.dfranco.learn.events.application.dtos.EventDto
-import br.dfranco.learn.events.application.dtos.LocationDto
-import br.dfranco.learn.events.domain.entities.LocationEntity
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.LocationNotFoundException
-import br.dfranco.learn.events.application.mappers.EventMapper
+import br.dfranco.learn.events.application.mappers.EventEntityMapper
 import br.dfranco.learn.events.infrastructure.persistence.EventRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -15,19 +13,19 @@ import java.util.UUID
 @Service
 class EventService(
         @Autowired private var eventRepository: EventRepository,
-        @Autowired private var eventMapper: EventMapper
+        @Autowired private var eventMapper: EventEntityMapper
 ) {
 
     @Transactional
     fun createEvent(eventDto: EventDto): EventDto {
         return eventDto
-                .let(eventMapper::dtoToEntity)
+                .let(eventMapper::toEntity)
                 .apply {
 //                    location = retrieveLocation(eventDto.locationId)
                     status = EventStatusEnum.UNPUBLISHED
                 }
                 .let(eventRepository::save)
-                .let(eventMapper::entityToDto)
+                .let(eventMapper::toDto)
     }
 
 //    @Transactional
