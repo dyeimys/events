@@ -69,7 +69,15 @@ tasks.test {
 jacoco {
     toolVersion = "0.8.7"
 }
-
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.8".toBigDecimal()
+            }
+        }
+    }
+}
 tasks.withType<JacocoReport> {
     reports {
         xml.required.set(true)
@@ -81,11 +89,9 @@ tasks.withType<JacocoReport> {
             fileTree(it).apply {
                 exclude(
                         "**/entities/**",
-//                        "**/mapper**/**",
                         "**/dtos/**",
                         "**/request/**",
                         "**/response/**",
-//                        "**/enuns/**",
 
                         )
             }
