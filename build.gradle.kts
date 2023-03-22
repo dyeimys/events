@@ -80,11 +80,11 @@ tasks.withType<JacocoReport> {
         classDirectories.setFrom(files(classDirectories.files.map {
             fileTree(it).apply {
                 exclude(
-//                        "**/entities/**",
+                        "**/entities/**",
 //                        "**/mapper**/**",
-//                        "**/dtos/**",
-//                        "**/request/**",
-//                        "**/response/**",
+                        "**/dtos/**",
+                        "**/request/**",
+                        "**/response/**",
 //                        "**/enuns/**",
 
                         )
