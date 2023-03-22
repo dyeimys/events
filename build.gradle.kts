@@ -66,7 +66,8 @@ tasks.test {
     finalizedBy("jacocoTestReport")
 }
 
-val fileFilter = listOf("**/entities/**",
+val fileFilter = listOf(
+        "**/entities/**",
         "**/dtos/**",
         "**/requests/**",
         "**/responses/**")
