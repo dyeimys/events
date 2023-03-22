@@ -18,9 +18,7 @@ class CreateEventUseCase(
 ) {
 
     fun execute(eventDto: EventDto): EventDto {
-
         val locationId = eventDto.locationId
-
 
         //TODO alterar essa gambiarra
         val locationEntity = if (locationId != null) {
