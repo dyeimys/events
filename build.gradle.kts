@@ -92,7 +92,7 @@ tasks.withType<JacocoReport> {
                         "**/dtos/**",
                         "**/requests/**",
                         "**/responses/**",
-
+                        "**/mappers/**",
                         )
             }
         }))
