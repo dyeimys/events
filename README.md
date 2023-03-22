@@ -72,6 +72,5 @@ Each layer has its own responsibilities and concerns, following the separation o
  - Kotlin
  - Spring Boot
  - JPA/Hibernate
- - Kafka
  - JUnit 5
  - Mockito
