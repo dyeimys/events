@@ -8,8 +8,8 @@ plugins {
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
     kotlin("kapt") version "1.5.10"
-
 }
+
 
 group = "br.dfranco.learn"
 version = "0.0.1-SNAPSHOT"

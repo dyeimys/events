@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-class LocationEntity(
+data class LocationEntity(
         @Id
         @GeneratedValue
         var id: UUID? = null,

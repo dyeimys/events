@@ -1,7 +1,7 @@
 package br.dfranco.learn.events.application.dtos
 
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class LocationDto (
         var id: UUID? = null,
