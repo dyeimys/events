@@ -1,8 +1,9 @@
 name: Docker pull Image
+
 on:
   push:
     tags:
-      - '*'
+      - '**'
 jobs:
   generate-image:
     runs-on: ubuntu-latest
