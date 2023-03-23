@@ -19,16 +19,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
+      - name: Grant permissions for gradlew
         run: chmod +x gradlew
-
       - name: Retrieve Version
         run: |
           echo "version_name=$(./gradlew -q printVersion)" >> $GITHUB_ENV
-
       - name: Build with Gradle
         run: ./gradlew build -x test
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -43,3 +40,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/dyeimys/events-api:latest,ghcr.io/dyeimys/events-api:${{ env.version_name }}
+
