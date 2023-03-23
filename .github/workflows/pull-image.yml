@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '**'
+
 jobs:
   generate-image:
     runs-on: ubuntu-latest
