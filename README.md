@@ -2,13 +2,13 @@
 [![Java CI with Gradle](https://github.com/dyeimys/events/actions/workflows/gradle.yml/badge.svg)](https://github.com/dyeimys/events/actions/workflows/gradle.yml)
 
 
-##:arrow_forward: Installation ## 
+## :arrow_forward: Installation
 ### Prerequisites ##
 To run this project, you will need to have the following software installed on your system:
 
 - JDK 17
 - Gradle 7+
-### Run local ##
+### Run local
 1. Clone the repository: 
 ```bash
 git clone https://github.com/dyeimys/events.git
@@ -23,7 +23,7 @@ cd events
 ```
 
 4. Access the application at http://localhost:8080/swagger-ui.html
-##:whale: Run in docker ##
+## :whale: Run in docker
 ```bash
 docker pull ghcr.io/dyeimys/events-api:latest
 ```
@@ -33,7 +33,7 @@ docker run -p 8080:8080 ghcr.io/dyeimys/events-api:latest
 ```
 🔗 Access Swagger: [swagger-ui/index](http://localhost:8080/swagger-ui/index.html)
 
-##:package: Packages organization
+## :package: Packages organization
 ```sql
 ├── kotlin
 │└── br
@@ -68,7 +68,7 @@ Each layer has its own responsibilities and concerns, following the separation o
 - `infrastructure`: contains the implementations of the interfaces defined by the `application` and `domain` layers. In this project, it contains the persistence and Kafka implementations.
 - `presentation`: contains the web controllers and their DTOs and mappers. The controllers receive the requests, use the `application` layer to perform the business logic, and return the responses to the client.
 
-##:heavy_check_mark: Built With ##
+## :heavy_check_mark: Built With
  - Kotlin
  - Spring Boot
  - JPA/Hibernate
