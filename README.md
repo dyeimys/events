@@ -69,8 +69,8 @@ Each layer has its own responsibilities and concerns, following the separation o
 - `presentation`: contains the web controllers and their DTOs and mappers. The controllers receive the requests, use the `application` layer to perform the business logic, and return the responses to the client.
 
 ## :heavy_check_mark: Built With
- - Kotlin
- - Spring Boot
- - JPA/Hibernate
- - JUnit 5
- - Mockito
+- Kotlin
+- Spring Boot
+- JPA/Hibernate
+- JUnit 5
+- Mockito
