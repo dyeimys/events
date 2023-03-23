@@ -1,6 +1,6 @@
 package br.dfranco.learn.events.application.usecases
 
-import br.dfranco.learn.events.application.dtos.EventDto
+import br.dfranco.learn.events.application.dtos.Event
 import br.dfranco.learn.events.application.mappers.EventEntityMapper
 import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.LocationNotFoundException
@@ -17,10 +17,8 @@ class CreateEventUseCase(
         private val eventMapper: EventEntityMapper,
 ) {
 
-    fun execute(eventDto: EventDto): EventDto {
-        val locationId = eventDto.locationId
-
-        //TODO alterar essa gambiarra
+    fun execute(eventInput: Event.CreateEventInput): Event.CreateEventOutput {
+        val locationId = eventInput.locationId
         val locationEntity = if (locationId != null) {
             if (locationRepository.existsById(locationId)) {
                 locationRepository.findById(locationId)
@@ -32,12 +30,12 @@ class CreateEventUseCase(
         }
 
 
-        return eventDto.let(eventMapper::toEntity)
+        return eventInput.let(eventMapper::toEntity)
                 .apply {
                     location = locationEntity
                     status = EventStatusEnum.UNPUBLISHED
                 }
                 .let(eventRepository::save)
-                .let { eventMapper.toDto(it) }
+                .let { eventMapper.toOutput(it) }
     }
 }

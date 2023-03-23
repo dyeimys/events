@@ -1,6 +1,6 @@
 package br.dfranco.learn.events.application.usecases
 
-import br.dfranco.learn.events.application.dtos.EventDto
+import br.dfranco.learn.events.application.dtos.Event
 import br.dfranco.learn.events.application.mappers.EventEntityMapper
 import br.dfranco.learn.events.domain.entities.EventEntity
 import br.dfranco.learn.events.domain.entities.LocationEntity
@@ -41,35 +41,34 @@ internal class CreateEventUseCaseTest {
 
 
     @Test
-    fun `should salve one event`() {
+    fun `should salve one event whitout location`() {
         // given
-
-
         val eventName = "My event"
-        val eventDate = LocalDateTime.now()
         val eventOwner = "Me"
+        val eventDate = LocalDateTime.now()
+        val eventId = UUID.randomUUID()
+        val status = EventStatusEnum.UNPUBLISHED
 
+        val eventInput = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = null)
         val eventEntity = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = null)
-        val eventDto = EventDto(name = eventName, date = eventDate, owner = eventOwner, locationId = null)
+        val eventOutput = Event.CreateEventOutput(id = eventId, name = eventName, date = eventDate, owner = eventOwner, location = null, status = status)
 
-        `when`(eventMapper.toEntity(eventDto)).thenReturn(eventEntity)
-        `when`(eventMapper.toDto(eventEntity)).thenReturn(eventDto)
+        `when`(eventMapper.toEntity(eventInput)).thenReturn(eventEntity)
         `when`(eventRepository.save(eventEntity)).thenReturn(eventEntity)
+        `when`(eventMapper.toOutput(eventEntity)).thenReturn(eventOutput)
 
         // when
-        val execute = createEventUseCase.execute(eventDto)
+        val execute = createEventUseCase.execute(eventInput)
 
 
         // then
-        assertThat(execute.locationId).isNull()
+        assertThat(execute.location).isNull()
         assertThat(execute.status).isEqualTo(EventStatusEnum.UNPUBLISHED)
-
-
         verify(locationRepository, never()).existsById(any(UUID::class.java))
         verify(locationRepository, never()).findById(any(UUID::class.java))
         verify(eventRepository).save(eventEntity)
-        verify(eventMapper).toDto(eventEntity)
-        verify(eventMapper).toEntity(eventDto)
+        verify(eventMapper).toOutput(eventEntity)
+        verify(eventMapper).toEntity(eventInput)
 
 
     }
@@ -81,33 +80,36 @@ internal class CreateEventUseCaseTest {
         val eventDate = LocalDateTime.now()
         val eventOwner = "Me"
         val locationId = UUID.randomUUID()
+        val eventId = UUID.randomUUID()
+        val eventStatus = EventStatusEnum.UNPUBLISHED
+        val locationName = "My Location"
+        val locationAddress = "My Address"
 
-
-        val locationEntity = LocationEntity(id = locationId, name = "My Location", address = "My Address")
-        val eventDto = EventDto(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
-        val eventEntity = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = locationEntity)
+        val locationMock = Event.Location(id = locationId, name = locationName, address = locationAddress)
+        val locationEntityMock = LocationEntity(id = locationId, name = locationName, address = locationAddress)
+        val inputMock = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
+        val eventEntityMock = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = locationEntityMock)
+        val outputMock = Event.CreateEventOutput(id = eventId, name = eventName, date = eventDate, owner = eventOwner, location = locationMock, status = eventStatus)
 
         `when`(locationRepository.existsById(locationId)).thenReturn(true)
-        `when`(locationRepository.findById(locationId)).thenReturn(Optional.of(locationEntity))
+        `when`(locationRepository.findById(locationId)).thenReturn(Optional.of(locationEntityMock))
 
-        `when`(eventMapper.toEntity(eventDto)).thenReturn(eventEntity)
-        `when`(eventMapper.toDto(eventEntity)).thenReturn(eventDto)
-        `when`(eventRepository.save(eventEntity)).thenReturn(eventEntity)
+        `when`(eventMapper.toEntity(inputMock)).thenReturn(eventEntityMock)
+        `when`(eventMapper.toOutput(eventEntityMock)).thenReturn(outputMock)
+        `when`(eventRepository.save(eventEntityMock)).thenReturn(eventEntityMock)
 
         // when
-        val execute = createEventUseCase.execute(eventDto)
+        val output = createEventUseCase.execute(inputMock)
 
         // then
-        assertThat(execute.locationId).isNotNull
-        assertThat(execute.status).isEqualTo(EventStatusEnum.UNPUBLISHED)
+        assertThat(output.location).isNotNull
+        assertThat(output.status).isEqualTo(EventStatusEnum.UNPUBLISHED)
 
         verify(locationRepository).existsById(any(UUID::class.java))
         verify(locationRepository).findById(any(UUID::class.java))
-        verify(eventRepository).save(eventEntity)
-        verify(eventMapper).toDto(eventEntity)
-        verify(eventMapper).toEntity(eventDto)
-
-
+        verify(eventRepository).save(eventEntityMock)
+        verify(eventMapper).toOutput(eventEntityMock)
+        verify(eventMapper).toEntity(inputMock)
     }
 
     @Test
@@ -119,21 +121,21 @@ internal class CreateEventUseCaseTest {
         val locationId = UUID.randomUUID()
 
 
-        val eventDto = EventDto(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
+        val eventInput = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
 
         `when`(locationRepository.existsById(locationId)).thenReturn(false)
 
 
         // when
-        assertThrows<LocationNotFoundException> { createEventUseCase.execute(eventDto) }
+        assertThrows<LocationNotFoundException> { createEventUseCase.execute(eventInput) }
 
         // then
 
         verify(locationRepository).existsById(locationId)
         verify(locationRepository, never()).findById(any(UUID::class.java))
         verify(eventRepository, never()).save(any(EventEntity::class.java))
-        verify(eventMapper, never()).toDto(any(EventEntity::class.java))
-        verify(eventMapper, never()).toEntity(any(EventDto::class.java))
+        verify(eventMapper, never()).toOutput(any(EventEntity::class.java))
+        verify(eventMapper, never()).toEntity(any(Event.CreateEventInput::class.java))
     }
 
     @Test
@@ -145,7 +147,7 @@ internal class CreateEventUseCaseTest {
         val locationId = UUID.randomUUID()
 
 
-        val eventDto = EventDto(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
+        val eventDto = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
 
         `when`(locationRepository.existsById(locationId)).thenReturn(true)
         `when`(locationRepository.findById(locationId)).thenReturn(Optional.empty())
@@ -155,12 +157,11 @@ internal class CreateEventUseCaseTest {
         assertThrows<LocationNotFoundException> { createEventUseCase.execute(eventDto) }
 
         // then
-
         verify(locationRepository).existsById(locationId)
         verify(locationRepository).findById(locationId)
         verify(eventRepository, never()).save(any(EventEntity::class.java))
-        verify(eventMapper, never()).toDto(any(EventEntity::class.java))
-        verify(eventMapper, never()).toEntity(any(EventDto::class.java))
+        verify(eventMapper, never()).toOutput(any(EventEntity::class.java))
+        verify(eventMapper, never()).toEntity(any(Event.CreateEventInput::class.java))
 
 
     }
