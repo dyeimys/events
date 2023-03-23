@@ -12,7 +12,7 @@ plugins {
 
 
 group = "br.dfranco.learn"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -104,5 +104,41 @@ tasks.withType<JacocoReport> {
                 exclude(fileFilter)
             }
         }))
+    }
+}
+
+// ./gradlew incrementVersion [-P[mode=major|minor|patch]|[overrideVersion=x]]
+tasks.create("incrementVersion") {
+    group = "my tasks"
+    description = "Increments the version in this build file everywhere it is used."
+    fun generateVersion(): String {
+        val updateMode = properties["mode"] ?: "minor" // By default, update the minor
+        val (oldMajor, oldMinor, oldPatch) = version.toString().split(".").map(String::toInt)
+        var (newMajor, newMinor, newPatch) = arrayOf(oldMajor, oldMinor, 0)
+        when (updateMode) {
+            "major" -> newMajor = (oldMajor + 1).also { newMinor = 0 }
+            "minor" -> newMinor = oldMinor + 1
+            else -> newPatch = oldPatch + 1
+        }
+        println("Version before increment: $version")
+        val incrementedVersion = "$newMajor.$newMinor.$newPatch"
+        println("Version after increment: $incrementedVersion")
+
+        return incrementedVersion
+    }
+    doLast {
+        val newVersion = properties["overrideVersion"] as String? ?: generateVersion()
+        val oldContent = buildFile.readText()
+        val newContent = oldContent.replace("""= "$version"""", """= "$newVersion"""")
+        buildFile.writeText(newContent)
+    }
+
+}
+
+
+// ./gradlew printVersion
+tasks.create("printVersion") {
+    doLast {
+        print(version)
     }
 }
