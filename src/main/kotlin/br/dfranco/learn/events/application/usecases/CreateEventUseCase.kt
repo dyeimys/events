@@ -2,7 +2,6 @@ package br.dfranco.learn.events.application.usecases
 
 import br.dfranco.learn.events.application.dtos.Event
 import br.dfranco.learn.events.application.mappers.EventEntityMapper
-import br.dfranco.learn.events.domain.enuns.EventStatusEnum
 import br.dfranco.learn.events.exceptions.LocationNotFoundException
 import br.dfranco.learn.events.infrastructure.persistence.EventRepository
 import br.dfranco.learn.events.infrastructure.persistence.LocationRepository
@@ -33,7 +32,6 @@ class CreateEventUseCase(
         return eventInput.let(eventMapper::toEntity)
                 .apply {
                     location = locationEntity
-                    status = EventStatusEnum.UNPUBLISHED
                 }
                 .let(eventRepository::save)
                 .let { eventMapper.toOutput(it) }

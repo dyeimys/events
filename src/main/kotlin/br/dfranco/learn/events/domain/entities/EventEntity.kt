@@ -30,7 +30,7 @@ data class EventEntity(
 
         @NotNull
         @Enumerated
-        var status: EventStatusEnum? = EventStatusEnum.UNPUBLISHED,
+        var status: EventStatusEnum,
 
         @Column
         var creationDate: LocalDateTime? = null,

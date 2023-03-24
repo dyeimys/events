@@ -77,5 +77,6 @@ internal class EventRepositoryTest {
                     name = eventName,
                     location = locationRepository.saveAndFlush(LocationEntity(name = "Dream Hall", address = "Dreams Street")),
                     date = eventDate,
-                    owner = eventOwner)
+                    owner = eventOwner,
+                    status = EventStatusEnum.UNPUBLISHED)
 }

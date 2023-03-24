@@ -50,7 +50,7 @@ internal class CreateEventUseCaseTest {
         val status = EventStatusEnum.UNPUBLISHED
 
         val eventInput = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = null)
-        val eventEntity = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = null)
+        val eventEntity = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = null, status = status)
         val eventOutput = Event.CreateEventOutput(id = eventId, name = eventName, date = eventDate, owner = eventOwner, location = null, status = status)
 
         `when`(eventMapper.toEntity(eventInput)).thenReturn(eventEntity)
@@ -63,7 +63,6 @@ internal class CreateEventUseCaseTest {
 
         // then
         assertThat(execute.location).isNull()
-        assertThat(execute.status).isEqualTo(EventStatusEnum.UNPUBLISHED)
         verify(locationRepository, never()).existsById(any(UUID::class.java))
         verify(locationRepository, never()).findById(any(UUID::class.java))
         verify(eventRepository).save(eventEntity)
@@ -88,7 +87,7 @@ internal class CreateEventUseCaseTest {
         val locationMock = Event.Location(id = locationId, name = locationName, address = locationAddress)
         val locationEntityMock = LocationEntity(id = locationId, name = locationName, address = locationAddress)
         val inputMock = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
-        val eventEntityMock = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = locationEntityMock)
+        val eventEntityMock = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = locationEntityMock,  status = eventStatus)
         val outputMock = Event.CreateEventOutput(id = eventId, name = eventName, date = eventDate, owner = eventOwner, location = locationMock, status = eventStatus)
 
         `when`(locationRepository.existsById(locationId)).thenReturn(true)
@@ -103,7 +102,6 @@ internal class CreateEventUseCaseTest {
 
         // then
         assertThat(output.location).isNotNull
-        assertThat(output.status).isEqualTo(EventStatusEnum.UNPUBLISHED)
 
         verify(locationRepository).existsById(any(UUID::class.java))
         verify(locationRepository).findById(any(UUID::class.java))
