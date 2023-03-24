@@ -8,8 +8,11 @@ import org.mapstruct.Mapping
 
 @Mapper(imports = [EventStatusEnum::class])
 interface EventEntityMapper {
-
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", expression = "java(EventStatusEnum.UNPUBLISHED)")
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "updateDate", ignore = true)
+    @Mapping(target = "location", ignore = true)
     fun toEntity(eventInput: Event.CreateEventInput): EventEntity
 
     fun toOutput(entity: EventEntity): Event.CreateEventOutput
