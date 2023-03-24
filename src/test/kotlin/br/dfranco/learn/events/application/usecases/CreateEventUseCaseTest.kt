@@ -63,7 +63,6 @@ internal class CreateEventUseCaseTest {
 
         // then
         assertThat(execute.location).isNull()
-        verify(locationRepository, never()).existsById(any(UUID::class.java))
         verify(locationRepository, never()).findById(any(UUID::class.java))
         verify(eventRepository).save(eventEntity)
         verify(eventMapper).toOutput(eventEntity)
@@ -90,7 +89,6 @@ internal class CreateEventUseCaseTest {
         val eventEntityMock = EventEntity(name = eventName, date = eventDate, owner = eventOwner, location = locationEntityMock,  status = eventStatus)
         val outputMock = Event.CreateEventOutput(id = eventId, name = eventName, date = eventDate, owner = eventOwner, location = locationMock, status = eventStatus)
 
-        `when`(locationRepository.existsById(locationId)).thenReturn(true)
         `when`(locationRepository.findById(locationId)).thenReturn(Optional.of(locationEntityMock))
 
         `when`(eventMapper.toEntity(inputMock)).thenReturn(eventEntityMock)
@@ -103,7 +101,6 @@ internal class CreateEventUseCaseTest {
         // then
         assertThat(output.location).isNotNull
 
-        verify(locationRepository).existsById(any(UUID::class.java))
         verify(locationRepository).findById(any(UUID::class.java))
         verify(eventRepository).save(eventEntityMock)
         verify(eventMapper).toOutput(eventEntityMock)
@@ -121,16 +118,12 @@ internal class CreateEventUseCaseTest {
 
         val eventInput = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
 
-        `when`(locationRepository.existsById(locationId)).thenReturn(false)
-
-
         // when
         assertThrows<LocationNotFoundException> { createEventUseCase.execute(eventInput) }
 
         // then
 
-        verify(locationRepository).existsById(locationId)
-        verify(locationRepository, never()).findById(any(UUID::class.java))
+        verify(locationRepository).findById(locationId)
         verify(eventRepository, never()).save(any(EventEntity::class.java))
         verify(eventMapper, never()).toOutput(any(EventEntity::class.java))
         verify(eventMapper, never()).toEntity(any(Event.CreateEventInput::class.java))
@@ -147,7 +140,6 @@ internal class CreateEventUseCaseTest {
 
         val eventDto = Event.CreateEventInput(name = eventName, date = eventDate, owner = eventOwner, locationId = locationId)
 
-        `when`(locationRepository.existsById(locationId)).thenReturn(true)
         `when`(locationRepository.findById(locationId)).thenReturn(Optional.empty())
 
 
@@ -155,13 +147,10 @@ internal class CreateEventUseCaseTest {
         assertThrows<LocationNotFoundException> { createEventUseCase.execute(eventDto) }
 
         // then
-        verify(locationRepository).existsById(locationId)
         verify(locationRepository).findById(locationId)
         verify(eventRepository, never()).save(any(EventEntity::class.java))
         verify(eventMapper, never()).toOutput(any(EventEntity::class.java))
         verify(eventMapper, never()).toEntity(any(Event.CreateEventInput::class.java))
-
-
     }
 
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
