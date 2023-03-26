@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface LocationRepository : JpaRepository<LocationEntity, UUID>
+interface LocationRepository : JpaRepository<LocationEntity, UUID> {
+    fun existsByNameAndAddress(name: String, address: String): Boolean
+}
+
