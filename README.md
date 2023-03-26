@@ -1,6 +1,5 @@
 # events
-[![Java CI with Gradle](https://github.com/dyeimys/events/actions/workflows/gradle.yml/badge.svg)](https://github.com/dyeimys/events/actions/workflows/gradle.yml)
-
+[![Java CI with Gradle](https://github.com/dyeimys/events/actions/workflows/gradle.yml/badge.svg)](https://github.com/dyeimys/events/actions/workflows/gradle.yml) [![Docker Image CI](https://github.com/dyeimys/events/actions/workflows/generate-version.yml/badge.svg)](https://github.com/dyeimys/events/actions/workflows/generate-version.yml)
 
 ## :arrow_forward: Installation
 ### Prerequisites ##
