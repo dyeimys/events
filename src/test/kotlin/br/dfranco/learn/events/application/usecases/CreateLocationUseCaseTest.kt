@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @SpringBootTest
-class CreateLocationUseCaseTest {
+internal class CreateLocationUseCaseTest {
 
 
     @InjectMocks
